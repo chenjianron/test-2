@@ -8,22 +8,26 @@
 
 /* Begin PBXBuildFile section */
 		67511ACF26ABFA5E003EDCAE /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 67511ACE26ABFA5E003EDCAE /* AppDelegate.swift */; };
-		67511AD126ABFA5E003EDCAE /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 67511AD026ABFA5E003EDCAE /* SceneDelegate.swift */; };
 		67511AD326ABFA5E003EDCAE /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 67511AD226ABFA5E003EDCAE /* ViewController.swift */; };
 		67511AD626ABFA5E003EDCAE /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 67511AD426ABFA5E003EDCAE /* Main.storyboard */; };
 		67511AD826ABFA5E003EDCAE /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 67511AD726ABFA5E003EDCAE /* Assets.xcassets */; };
 		67511ADB26ABFA5E003EDCAE /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 67511AD926ABFA5E003EDCAE /* LaunchScreen.storyboard */; };
+		67511AEB26AC2FCC003EDCAE /* images in Resources */ = {isa = PBXBuildFile; fileRef = 67511AEA26AC2FCC003EDCAE /* images */; };
+		67511AF026AC6C9B003EDCAE /* CommonWord.swift in Sources */ = {isa = PBXBuildFile; fileRef = 67511AEF26AC6C9B003EDCAE /* CommonWord.swift */; };
+		6784274D26AD9A2A0017BF1F /* CommonWordTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6784274C26AD9A2A0017BF1F /* CommonWordTableViewCell.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
 		67511ACB26ABFA5E003EDCAE /* 考核二.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "考核二.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		67511ACE26ABFA5E003EDCAE /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
-		67511AD026ABFA5E003EDCAE /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
 		67511AD226ABFA5E003EDCAE /* ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
 		67511AD526ABFA5E003EDCAE /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
 		67511AD726ABFA5E003EDCAE /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		67511ADA26ABFA5E003EDCAE /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		67511ADC26ABFA5E003EDCAE /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		67511AEA26AC2FCC003EDCAE /* images */ = {isa = PBXFileReference; lastKnownFileType = folder; path = images; sourceTree = "<group>"; };
+		67511AEF26AC6C9B003EDCAE /* CommonWord.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CommonWord.swift; sourceTree = "<group>"; };
+		6784274C26AD9A2A0017BF1F /* CommonWordTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CommonWordTableViewCell.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -56,15 +60,41 @@
 		67511ACD26ABFA5E003EDCAE /* 考核二 */ = {
 			isa = PBXGroup;
 			children = (
+				67511AEE26AC6BDF003EDCAE /* Controller */,
+				67511AED26AC6BD5003EDCAE /* View */,
+				67511AEC26AC6BCA003EDCAE /* Model */,
 				67511ACE26ABFA5E003EDCAE /* AppDelegate.swift */,
-				67511AD026ABFA5E003EDCAE /* SceneDelegate.swift */,
-				67511AD226ABFA5E003EDCAE /* ViewController.swift */,
+				67511AEA26AC2FCC003EDCAE /* images */,
 				67511AD426ABFA5E003EDCAE /* Main.storyboard */,
 				67511AD726ABFA5E003EDCAE /* Assets.xcassets */,
 				67511AD926ABFA5E003EDCAE /* LaunchScreen.storyboard */,
 				67511ADC26ABFA5E003EDCAE /* Info.plist */,
 			);
 			path = "考核二";
+			sourceTree = "<group>";
+		};
+		67511AEC26AC6BCA003EDCAE /* Model */ = {
+			isa = PBXGroup;
+			children = (
+				67511AEF26AC6C9B003EDCAE /* CommonWord.swift */,
+			);
+			path = Model;
+			sourceTree = "<group>";
+		};
+		67511AED26AC6BD5003EDCAE /* View */ = {
+			isa = PBXGroup;
+			children = (
+				6784274C26AD9A2A0017BF1F /* CommonWordTableViewCell.swift */,
+			);
+			path = View;
+			sourceTree = "<group>";
+		};
+		67511AEE26AC6BDF003EDCAE /* Controller */ = {
+			isa = PBXGroup;
+			children = (
+				67511AD226ABFA5E003EDCAE /* ViewController.swift */,
+			);
+			path = Controller;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -124,6 +154,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				67511AEB26AC2FCC003EDCAE /* images in Resources */,
 				67511ADB26ABFA5E003EDCAE /* LaunchScreen.storyboard in Resources */,
 				67511AD826ABFA5E003EDCAE /* Assets.xcassets in Resources */,
 				67511AD626ABFA5E003EDCAE /* Main.storyboard in Resources */,
@@ -137,9 +168,10 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				6784274D26AD9A2A0017BF1F /* CommonWordTableViewCell.swift in Sources */,
 				67511AD326ABFA5E003EDCAE /* ViewController.swift in Sources */,
+				67511AF026AC6C9B003EDCAE /* CommonWord.swift in Sources */,
 				67511ACF26ABFA5E003EDCAE /* AppDelegate.swift in Sources */,
-				67511AD126ABFA5E003EDCAE /* SceneDelegate.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
