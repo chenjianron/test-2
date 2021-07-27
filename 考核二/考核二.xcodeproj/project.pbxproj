@@ -15,6 +15,7 @@
 		67511AEB26AC2FCC003EDCAE /* images in Resources */ = {isa = PBXBuildFile; fileRef = 67511AEA26AC2FCC003EDCAE /* images */; };
 		67511AF026AC6C9B003EDCAE /* CommonWord.swift in Sources */ = {isa = PBXBuildFile; fileRef = 67511AEF26AC6C9B003EDCAE /* CommonWord.swift */; };
 		6784274D26AD9A2A0017BF1F /* CommonWordTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6784274C26AD9A2A0017BF1F /* CommonWordTableViewCell.swift */; };
+		67AD609926AEFB1900721EF3 /* EditViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 67AD609826AEFB1900721EF3 /* EditViewController.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -28,6 +29,7 @@
 		67511AEA26AC2FCC003EDCAE /* images */ = {isa = PBXFileReference; lastKnownFileType = folder; path = images; sourceTree = "<group>"; };
 		67511AEF26AC6C9B003EDCAE /* CommonWord.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CommonWord.swift; sourceTree = "<group>"; };
 		6784274C26AD9A2A0017BF1F /* CommonWordTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CommonWordTableViewCell.swift; sourceTree = "<group>"; };
+		67AD609826AEFB1900721EF3 /* EditViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditViewController.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -93,6 +95,7 @@
 			isa = PBXGroup;
 			children = (
 				67511AD226ABFA5E003EDCAE /* ViewController.swift */,
+				67AD609826AEFB1900721EF3 /* EditViewController.swift */,
 			);
 			path = Controller;
 			sourceTree = "<group>";
@@ -168,6 +171,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				67AD609926AEFB1900721EF3 /* EditViewController.swift in Sources */,
 				6784274D26AD9A2A0017BF1F /* CommonWordTableViewCell.swift in Sources */,
 				67511AD326ABFA5E003EDCAE /* ViewController.swift in Sources */,
 				67511AF026AC6C9B003EDCAE /* CommonWord.swift in Sources */,
