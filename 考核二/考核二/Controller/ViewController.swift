@@ -9,7 +9,7 @@ import UIKit
 
 
 protocol ViewControllerDelegate:NSObjectProtocol {
-    func retResourceData(data:CommonWord)
+    func retResourceData(data:CommonWord,isEditStatus:Bool)
 }
 
 class ViewController: UIViewController, ViewControllerDelegate{
@@ -17,6 +17,7 @@ class ViewController: UIViewController, ViewControllerDelegate{
     let fullScreenSize = UIScreen.main.bounds.size
     var resoureData = [CommonWord]()
     var deleteIndexs = [Int]()
+    var selectIndex:Int? = -1
     
     lazy var leftButton: UIBarButtonItem = {
         // 導覽列左邊按鈕
@@ -57,9 +58,9 @@ class ViewController: UIViewController, ViewControllerDelegate{
     
     lazy var deleteButton: UIButton = {
        let deleteButton = UIButton(
-        frame: CGRect(x:0,y:0,width:fullScreenSize.width,height:30)
+        frame: CGRect(x:0,y:fullScreenSize.height - 60-44-(UIApplication.shared.keyWindow?.safeAreaInsets.top)!-(UIApplication.shared.keyWindow?.safeAreaInsets.bottom)!,width:fullScreenSize.width,height:60+(UIApplication.shared.keyWindow?.safeAreaInsets.bottom)!)
        )
-        deleteButton.center = CGPoint(x: fullScreenSize.width / 2, y: fullScreenSize.height - 80)
+//        deleteButton.center = CGPoint(x: fullScreenSize.width / 2, y: fullScreenSize.height - 60)
         deleteButton.setTitle("删除", for: .normal)
         deleteButton.backgroundColor = UIColor.red
         deleteButton.addTarget(self, action: #selector(ViewController.deleteing), for: .touchUpInside)
@@ -73,6 +74,11 @@ class ViewController: UIViewController, ViewControllerDelegate{
         addTableViewCellButton.setImage(UIImage(named: "images/add.png"), for: .normal)
         addTableViewCellButton.addTarget(self, action: #selector(ViewController.add), for: .touchUpInside)
         return addTableViewCellButton
+    }()
+    
+    lazy var editViewController:EditViewController = {
+        
+        return EditViewController()
     }()
     
 //    lazy var bottomImageView: UIImageView = {
@@ -92,7 +98,6 @@ class ViewController: UIViewController, ViewControllerDelegate{
         // Do any additional setup after loading the view.
         setupUI()
         setupConstraints()
-        print("viewDidLoad")
     }
 }
 
@@ -144,10 +149,7 @@ extension ViewController{
 //        let commonWord = CommonWord(commonWord: "这是第一个常用语这是一个常用语这是一个常用语这是一个常用语这是一个常用语",date: dformatter.string(from: Date()))
 //        resoureData.append(commonWord)
 //        tableView!.reloadData()
-        let editViewController = EditViewController()
-        editViewController.setDelegate(delegate:self)
         self.navigationController?.pushViewController(editViewController,animated: false)
-        
     }
     
     func setResoureData(commonWord:CommonWord){
@@ -157,9 +159,14 @@ extension ViewController{
         
     }
     
-    func retResourceData(data:CommonWord){
-        resoureData.append(data)
-        print("retResourceData \(resoureData)")
+    func retResourceData(data:CommonWord,isEditStatus:Bool){
+        if !isEditStatus {
+            resoureData.append(data)
+        } else {
+            resoureData[selectIndex!] = data
+            selectIndex = -1
+        }
+        
         if resoureData.count == 1 {
             if tableView == nil{
                 tableView = UITableView(frame: CGRect(x:0,y:40,width: fullScreenSize.width,height: fullScreenSize.height-212),style:.plain);
@@ -171,7 +178,7 @@ extension ViewController{
                 tableView!.separatorStyle = .none
                 tableView!.separatorInset = UIEdgeInsets(top: 0,left: 0,bottom: 0,right: 0)
         
-                tableView!.allowsSelection = false
+                tableView!.allowsSelection = true
                 tableView!.allowsMultipleSelection = false
                 
                 tableView!.allowsMultipleSelectionDuringEditing = true
@@ -210,13 +217,18 @@ extension ViewController {
             self.navigationItem.leftBarButtonItem?.isEnabled = false
         }
         
+        let backButtonItem = UIBarButtonItem()
+        backButtonItem.title = ""
+        self.navigationItem.backBarButtonItem = backButtonItem
+        
         self.view.addSubview(addTableViewCellButton)
         self.view.addSubview(appTitle)
 //        self.view.addSubview(bottomImageView)
         self.view.addSubview(emptyImageView)
         self.view.addSubview(deleteButton)
         deleteButton.isHidden = true
-        print("setUI\(resoureData)")
+        editViewController.setDelegate(delegate:self)
+//        print("setUI\(resoureData)")
         
     }
     func setupConstraints(){
@@ -245,20 +257,29 @@ extension ViewController: UITableViewDelegate, UITableViewDataSource {
         // 取消 cell 的選取狀態
 //        tableView.deselectRow(
 //            at: indexPath as IndexPath, animated: false)
-        deleteIndexs.append(indexPath.row)
-        deleteButton.isHidden = false
         
+        if tableView.isEditing{
+            deleteIndexs.append(indexPath.row)
+            deleteButton.isHidden = false
+        } else {
+            selectIndex = indexPath.row
+            editViewController.setTextView(text: resoureData[indexPath.row].commonWord)
+            self.navigationController?.pushViewController(editViewController,animated: false)
+        }
     }
     
     
     func tableView(_ tableView: UITableView, didDeselectRowAt indexPath: IndexPath) {
-        let index = deleteIndexs.firstIndex(of: indexPath.row)!
-        deleteIndexs.remove(at: index)
-        tableView.deselectRow(at: indexPath, animated: false)
-        
-        if deleteIndexs.count == 0 {
-            deleteButton.isHidden = true
+        if tableView.isEditing {
+            let index = deleteIndexs.firstIndex(of: indexPath.row)!
+            deleteIndexs.remove(at: index)
+//            tableView.deselectRow(at: indexPath, animated: false)
+            
+            if deleteIndexs.count == 0 {
+                deleteButton.isHidden = true
+            }
         }
+        
     }
     
     
