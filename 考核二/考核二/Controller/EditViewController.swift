@@ -13,15 +13,6 @@ class EditViewController: UIViewController {
     var delegate:ViewControllerDelegate?
     var isEditStatus: Bool = false
     
-    var db :SQLiteConnect? = nil
-    let sqliteURL: URL = {
-        do {
-            return try FileManager.default.url(for: .documentDirectory, in: .userDomainMask, appropriateFor: nil, create: true).appendingPathComponent("db.sqlite")
-        } catch {
-            fatalError("Error getting file URL from document directory.")
-        }
-    }()
-    
     lazy var textView:UITextView = {
         let textView = UITextView(frame: CGRect(x:40,y:37,width: 300,height: fullSize.height - 400-44-(UIApplication.shared.keyWindow?.safeAreaInsets.top)!-(UIApplication.shared.keyWindow?.safeAreaInsets.bottom)!))
 //        textView.center = CGPoint(x:fullSize.width / 2, y: fullSize.height / 2 - 230)

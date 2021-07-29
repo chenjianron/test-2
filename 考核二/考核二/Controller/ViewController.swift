@@ -81,11 +81,12 @@ class ViewController: UIViewController, ViewControllerDelegate{
     }()
 
     let sqliteURL: URL = {
-        do {
-            return try FileManager.default.url(for: .documentDirectory, in: .userDomainMask, appropriateFor: nil, create: true).appendingPathComponent("db.sqlite")
-        } catch {
-            fatalError("Error getting file URL from document directory.")
-        }
+        return SQLiteConnect.sqliteURL()
+//        do {
+//            return try FileManager.default.url(for: .documentDirectory, in: .userDomainMask, appropriateFor: nil, create: true).appendingPathComponent("db.sqlite")
+//        } catch {
+//            fatalError("Error getting file URL from document directory.")
+//        }
     }()
     
 //    lazy var bottomImageView: UIImageView = {
@@ -192,25 +193,6 @@ extension ViewController{
             }
 //            sqlite3_finalize(statement)
         }
-    }
-    
-    func setResoureData(commonWord:CommonWord){
-//        resoureData.append(commonWord)
-        print(db!.insert("commonWords",
-                         rowInfo: ["commonWord": commonWord.commonWord!,"date": "'7月29日'"]))
-        let statement = db!.fetch("commonWords", cond: "1 == 1", order: nil)
-        print(statement)
-        while sqlite3_step(statement) == SQLITE_ROW{
-            print("sqlite3_step")
-            let id = sqlite3_column_int(statement, 0)
-            let commonWord = String(cString: sqlite3_column_text(statement, 1))
-            let date = String(cString: sqlite3_column_text(statement, 2))
-            print("\(id). 常用语：\(commonWord) 创建时间： \(date)")
-            
-            resoureData.append(CommonWord(commonWord: commonWord,date: date,id:Int(id)))
-            print(resoureData)
-        }
-        tableView!.reloadData()
     }
     
     func retResourceData(data:CommonWord,isEditStatus:Bool){
