@@ -15,6 +15,7 @@
 		67511AEB26AC2FCC003EDCAE /* images in Resources */ = {isa = PBXBuildFile; fileRef = 67511AEA26AC2FCC003EDCAE /* images */; };
 		67511AF026AC6C9B003EDCAE /* CommonWord.swift in Sources */ = {isa = PBXBuildFile; fileRef = 67511AEF26AC6C9B003EDCAE /* CommonWord.swift */; };
 		6784274D26AD9A2A0017BF1F /* CommonWordTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6784274C26AD9A2A0017BF1F /* CommonWordTableViewCell.swift */; };
+		678FF6BB26B15DB100578D9A /* SQLiteConnect.swift in Sources */ = {isa = PBXBuildFile; fileRef = 678FF6BA26B15DB100578D9A /* SQLiteConnect.swift */; };
 		67AD609926AEFB1900721EF3 /* EditViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 67AD609826AEFB1900721EF3 /* EditViewController.swift */; };
 /* End PBXBuildFile section */
 
@@ -29,6 +30,7 @@
 		67511AEA26AC2FCC003EDCAE /* images */ = {isa = PBXFileReference; lastKnownFileType = folder; path = images; sourceTree = "<group>"; };
 		67511AEF26AC6C9B003EDCAE /* CommonWord.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CommonWord.swift; sourceTree = "<group>"; };
 		6784274C26AD9A2A0017BF1F /* CommonWordTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CommonWordTableViewCell.swift; sourceTree = "<group>"; };
+		678FF6BA26B15DB100578D9A /* SQLiteConnect.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = SQLiteConnect.swift; path = ../../../../UITextView/UITextView/SQLiteConnect.swift; sourceTree = "<group>"; };
 		67AD609826AEFB1900721EF3 /* EditViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditViewController.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -95,6 +97,7 @@
 			isa = PBXGroup;
 			children = (
 				67511AD226ABFA5E003EDCAE /* ViewController.swift */,
+				678FF6BA26B15DB100578D9A /* SQLiteConnect.swift */,
 				67AD609826AEFB1900721EF3 /* EditViewController.swift */,
 			);
 			path = Controller;
@@ -175,6 +178,7 @@
 				6784274D26AD9A2A0017BF1F /* CommonWordTableViewCell.swift in Sources */,
 				67511AD326ABFA5E003EDCAE /* ViewController.swift in Sources */,
 				67511AF026AC6C9B003EDCAE /* CommonWord.swift in Sources */,
+				678FF6BB26B15DB100578D9A /* SQLiteConnect.swift in Sources */,
 				67511ACF26ABFA5E003EDCAE /* AppDelegate.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

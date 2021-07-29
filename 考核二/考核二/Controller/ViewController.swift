@@ -6,7 +6,7 @@
 //
 
 import UIKit
-
+import SQLite3
 
 protocol ViewControllerDelegate:NSObjectProtocol {
     func retResourceData(data:CommonWord,isEditStatus:Bool)
@@ -69,8 +69,7 @@ class ViewController: UIViewController, ViewControllerDelegate{
     }()
     
     lazy var addTableViewCellButton: UIButton = {
-        let addTableViewCellButton = UIButton(frame: CGRect(x: 0, y: 0, width: 58, height: 58))
-        addTableViewCellButton.center = CGPoint(x: fullScreenSize.width / 2, y: fullScreenSize.height-140)
+        let addTableViewCellButton = UIButton(frame: CGRect(x: 160, y: fullScreenSize.height-180-(UIApplication.shared.keyWindow?.safeAreaInsets.bottom)!, width: 58, height: 58))
         addTableViewCellButton.setImage(UIImage(named: "images/add.png"), for: .normal)
         addTableViewCellButton.addTarget(self, action: #selector(ViewController.add), for: .touchUpInside)
         return addTableViewCellButton
@@ -79,6 +78,14 @@ class ViewController: UIViewController, ViewControllerDelegate{
     lazy var editViewController:EditViewController = {
         
         return EditViewController()
+    }()
+
+    let sqliteURL: URL = {
+        do {
+            return try FileManager.default.url(for: .documentDirectory, in: .userDomainMask, appropriateFor: nil, create: true).appendingPathComponent("db.sqlite")
+        } catch {
+            fatalError("Error getting file URL from document directory.")
+        }
     }()
     
 //    lazy var bottomImageView: UIImageView = {
@@ -89,6 +96,7 @@ class ViewController: UIViewController, ViewControllerDelegate{
 //        bottomImageView.image = UIImage(named: "images/Light - Portrait.png")
 //        return bottomImageView
 //    }()
+    var db :SQLiteConnect? = nil
     var tableView: UITableView?
     var alertController:UIAlertController?
     var labelTrailing: NSLayoutConstraint!
@@ -96,6 +104,7 @@ class ViewController: UIViewController, ViewControllerDelegate{
     override func viewDidLoad() {
         super.viewDidLoad()
         // Do any additional setup after loading the view.
+        setupResourceData()
         setupUI()
         setupConstraints()
     }
@@ -124,10 +133,12 @@ extension ViewController{
         
     }
     @objc func deleteing(){
+        
         deleteIndexs.sort(by: >)
         for index in deleteIndexs{
+            print(resoureData[index])
+            print(db!.delete("commonWords", cond: "id = \(resoureData[index].id!)"))
             resoureData.remove(at: index)
-            
         }
         deleteIndexs = []
         tableView?.reloadData()
@@ -152,40 +163,84 @@ extension ViewController{
         self.navigationController?.pushViewController(editViewController,animated: false)
     }
     
-    func setResoureData(commonWord:CommonWord){
-       
-        resoureData.append(commonWord)
-        tableView!.reloadData()
+    func setupResourceData(){
+        let sqlitePath = sqliteURL.path
         
+        // 印出儲存檔案的位置
+        print(sqlitePath)
+        
+        // SQLite 資料庫
+        db = SQLiteConnect(path: sqlitePath)
+        
+        if let mydb = db {
+            // create table
+            print(mydb.createTable("commonWords", columnsInfo: [
+                                    "id integer primary key autoincrement",
+                                    "commonWord text",
+                                    "date text"]))
+            // select
+            let statement = mydb.fetch("commonWords", cond: "1 == 1", order: nil)
+            print(statement)
+            while sqlite3_step(statement) == SQLITE_ROW{
+                print("sqlite3_step")
+                let id = sqlite3_column_int(statement, 0)
+                let commonWord = String(cString: sqlite3_column_text(statement, 1))
+                let date = String(cString: sqlite3_column_text(statement, 2))
+                print("\(id). 常用语：\(commonWord) 创建时间： \(date)")
+                resoureData.append(CommonWord(commonWord: commonWord,date: date,id:Int(id)))
+                print(resoureData)
+            }
+//            sqlite3_finalize(statement)
+        }
+    }
+    
+    func setResoureData(commonWord:CommonWord){
+//        resoureData.append(commonWord)
+        print(db!.insert("commonWords",
+                         rowInfo: ["commonWord": commonWord.commonWord!,"date": "'7月29日'"]))
+        let statement = db!.fetch("commonWords", cond: "1 == 1", order: nil)
+        print(statement)
+        while sqlite3_step(statement) == SQLITE_ROW{
+            print("sqlite3_step")
+            let id = sqlite3_column_int(statement, 0)
+            let commonWord = String(cString: sqlite3_column_text(statement, 1))
+            let date = String(cString: sqlite3_column_text(statement, 2))
+            print("\(id). 常用语：\(commonWord) 创建时间： \(date)")
+            
+            resoureData.append(CommonWord(commonWord: commonWord,date: date,id:Int(id)))
+            print(resoureData)
+        }
+        tableView!.reloadData()
     }
     
     func retResourceData(data:CommonWord,isEditStatus:Bool){
         if !isEditStatus {
-            resoureData.append(data)
+            print(db!.insert("commonWords",
+                             rowInfo: ["commonWord": "'\(data.commonWord!)'","date": "'\(data.date!)'"]))
+            resoureData = []
+            let statement = db!.fetch("commonWords", cond: "1 == 1", order: nil)
+            print(statement)
+            while sqlite3_step(statement) == SQLITE_ROW{
+                print("sqlite3_step")
+                let id = sqlite3_column_int(statement, 0)
+                let commonWord = String(cString: sqlite3_column_text(statement, 1))
+                let date = String(cString: sqlite3_column_text(statement, 2))
+                print("\(id). 常用语：\(commonWord) 创建时间： \(date)")
+                
+                resoureData.append(CommonWord(commonWord: commonWord,date: date,id:Int(id)))
+                print(resoureData)
+            }
+            tableView!.reloadData()
         } else {
+//            resoureData[selectIndex!] = data
+            print(db!.update(
+                    "commonWords",
+                    cond: "id = \(resoureData[selectIndex!].id!)",
+                    rowInfo:["commonWord": "'\(data.commonWord!)'","date": "'\(data.date!)'"]))
             resoureData[selectIndex!] = data
             selectIndex = -1
         }
-        
         if resoureData.count == 1 {
-            if tableView == nil{
-                tableView = UITableView(frame: CGRect(x:0,y:40,width: fullScreenSize.width,height: fullScreenSize.height-212),style:.plain);
-                tableView!.register(CommonWordTableViewCell.self, forCellReuseIdentifier:"commonWordCellType")
-                
-                tableView!.delegate = self
-                tableView!.dataSource = self
-                
-                tableView!.separatorStyle = .none
-                tableView!.separatorInset = UIEdgeInsets(top: 0,left: 0,bottom: 0,right: 0)
-        
-                tableView!.allowsSelection = true
-                tableView!.allowsMultipleSelection = false
-                
-                tableView!.allowsMultipleSelectionDuringEditing = true
-                tableView!.allowsSelectionDuringEditing = true
-                
-                self.view.addSubview(tableView!)
-            }
             self.navigationItem.leftBarButtonItem?.isEnabled = true
             self.view.sendSubviewToBack(self.emptyImageView)
             self.view.bringSubviewToFront(self.tableView!)
@@ -208,7 +263,6 @@ extension ViewController {
         self.navigationController?.navigationBar.clipsToBounds = true
         
 //        self.navigationController?.navigationBar.frame = CGRect(x:20,y: 44,width: fullScreenSize.width,height:44)
-
         
         // 加到導覽列中
         self.navigationItem.rightBarButtonItem = rightButton
@@ -226,11 +280,35 @@ extension ViewController {
 //        self.view.addSubview(bottomImageView)
         self.view.addSubview(emptyImageView)
         self.view.addSubview(deleteButton)
+        tableView = UITableView(frame: CGRect(x:0,y:40,width: fullScreenSize.width,height: fullScreenSize.height-230-(UIApplication.shared.keyWindow?.safeAreaInsets.bottom)!),style:.plain);
+        tableView!.register(CommonWordTableViewCell.self, forCellReuseIdentifier:"commonWordCellType")
+        
+        tableView!.delegate = self
+        tableView!.dataSource = self
+        
+        tableView!.separatorStyle = .none
+        tableView!.separatorInset = UIEdgeInsets(top: 0,left: 0,bottom: 0,right: 0)
+
+        tableView!.allowsSelection = true
+        tableView!.allowsMultipleSelection = false
+        
+        tableView!.allowsMultipleSelectionDuringEditing = true
+        tableView!.allowsSelectionDuringEditing = true
+        
+        self.view.addSubview(tableView!)
+        
+        if resoureData.count > 0 {
+            print("resoureData.count > 0")
+            self.navigationItem.leftBarButtonItem?.isEnabled = true
+        } else {
+            self.view.sendSubviewToBack(self.tableView!)
+            self.view.bringSubviewToFront(self.emptyImageView)
+        }
         deleteButton.isHidden = true
         editViewController.setDelegate(delegate:self)
 //        print("setUI\(resoureData)")
-        
     }
+    
     func setupConstraints(){
         
     }
@@ -257,7 +335,6 @@ extension ViewController: UITableViewDelegate, UITableViewDataSource {
         // 取消 cell 的選取狀態
 //        tableView.deselectRow(
 //            at: indexPath as IndexPath, animated: false)
-        
         if tableView.isEditing{
             deleteIndexs.append(indexPath.row)
             deleteButton.isHidden = false
@@ -267,7 +344,6 @@ extension ViewController: UITableViewDelegate, UITableViewDataSource {
             self.navigationController?.pushViewController(editViewController,animated: false)
         }
     }
-    
     
     func tableView(_ tableView: UITableView, didDeselectRowAt indexPath: IndexPath) {
         if tableView.isEditing {
@@ -282,19 +358,18 @@ extension ViewController: UITableViewDelegate, UITableViewDataSource {
         
     }
     
-    
     func tableView(_ tableView: UITableView,heightForRowAt indexPath: IndexPath) -> CGFloat {
-        return 62
+        return 58
     }
-    
     
     func tableView(_ tableView: UITableView, canEditRowAt indexPath: IndexPath) -> Bool{
         return true
-
     }
+    
     func tableView(_ tableView: UITableView, titleForDeleteConfirmationButtonForRowAt indexPath: IndexPath) -> String?{
            return "删除"
        }
+    
     func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCell.EditingStyle, forRowAt indexPath: IndexPath)
        {
             if editingStyle == UITableViewCell.EditingStyle.delete {
@@ -309,14 +384,14 @@ extension ViewController: UITableViewDelegate, UITableViewDataSource {
                         style: .cancel,
                       handler: nil)
                 alertController?.addAction(cancelAction)
-
                     // 建立[刪除]按鈕
                     let okAction = UIAlertAction(
                         title: "刪除",
                         style: .destructive,
                         handler: {_ in
+                            print(self.db!.delete("commonWords", cond: "id = \(self.resoureData[indexPath.row].id!)"))
                         self.resoureData.remove(at: indexPath.row)
-                        tableView.deleteRows(at: [indexPath], with: UITableView.RowAnimation.automatic)
+//                        tableView.deleteRows(at: [indexPath], with: UITableView.RowAnimation.automatic)
                         if self.resoureData.count == 0 {
     //                        self.navigationItem.leftBarButtonItem = nil
                             self.navigationItem.leftBarButtonItem?.isEnabled = false
@@ -326,7 +401,6 @@ extension ViewController: UITableViewDelegate, UITableViewDataSource {
                         tableView.reloadData()
                     })
                 alertController?.addAction(okAction)
-
                     // 顯示提示框
                 self.present(
                         alertController!,
@@ -334,5 +408,4 @@ extension ViewController: UITableViewDelegate, UITableViewDataSource {
                       completion: nil)
                }
        }
-    
 }

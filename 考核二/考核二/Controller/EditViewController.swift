@@ -13,9 +13,18 @@ class EditViewController: UIViewController {
     var delegate:ViewControllerDelegate?
     var isEditStatus: Bool = false
     
+    var db :SQLiteConnect? = nil
+    let sqliteURL: URL = {
+        do {
+            return try FileManager.default.url(for: .documentDirectory, in: .userDomainMask, appropriateFor: nil, create: true).appendingPathComponent("db.sqlite")
+        } catch {
+            fatalError("Error getting file URL from document directory.")
+        }
+    }()
+    
     lazy var textView:UITextView = {
-        let textView = UITextView(frame: CGRect(x:0,y:0,width: 300,height: fullSize.height / 2 - 100))
-        textView.center = CGPoint(x:fullSize.width / 2, y: fullSize.height / 2 - 230)
+        let textView = UITextView(frame: CGRect(x:40,y:37,width: 300,height: fullSize.height - 400-44-(UIApplication.shared.keyWindow?.safeAreaInsets.top)!-(UIApplication.shared.keyWindow?.safeAreaInsets.bottom)!))
+//        textView.center = CGPoint(x:fullSize.width / 2, y: fullSize.height / 2 - 230)
         textView.textAlignment = .left
         textView.backgroundColor = UIColor(red: 245/255, green: 245/255, blue: 245/255, alpha: 1)
         textView.font = UIFont(name: "Helvetica", size: 14)
@@ -33,11 +42,11 @@ class EditViewController: UIViewController {
           target:self ,
             action: #selector(EditViewController.saving))
         rightButton.isEnabled = false
-        return rightButton 
+        return rightButton
     }()
     
     lazy var textCountLabel:UILabel = {
-        let textCountLabel = UILabel(frame: CGRect(x: 280, y: fullSize.height/2 - 100, width: 54, height: 15))
+        let textCountLabel = UILabel(frame: CGRect(x: 287, y: fullSize.height - 390-44-(UIApplication.shared.keyWindow?.safeAreaInsets.top)!-(UIApplication.shared.keyWindow?.safeAreaInsets.bottom)!, width: 54, height: 15))
         textCountLabel.text = "0/200"
         textCountLabel.textColor = UIColor.gray
         textCountLabel.font = UIFont(name: "Helvetica", size: 14)
@@ -45,7 +54,7 @@ class EditViewController: UIViewController {
     }()
     
     lazy var hintLabel:UILabel = {
-        let hintLabel = UILabel(frame: CGRect(x: 44, y: 32, width: 100, height: 15))
+        let hintLabel = UILabel(frame: CGRect(x: 46, y: 45, width: 100, height: 15))
         hintLabel.text = "添加常用语"
         hintLabel.font = UIFont(name: "Helvetica", size: 14)
         hintLabel.textColor = UIColor.lightGray
@@ -57,11 +66,10 @@ class EditViewController: UIViewController {
         super.viewDidLoad()
         setUpUI()
         setupConstrains()
-        print("viewDidLoad")
     }
     
     override func viewWillDisappear(_ animated: Bool) {
-        print("viewWillDisappear")
+//        print("viewWillDisappear")
         rightButton.isEnabled = false
         self.isEditStatus = false
         hintLabel.isHidden = false
@@ -69,37 +77,37 @@ class EditViewController: UIViewController {
         textCountLabel.text = "0/200"
     }
     
-    override func awakeFromNib() {
-        print("awakeFromNib")
-    }
-    
-    override func loadView() {
-        super.loadView()
-        print("loadView")
-    }
-    
-    override func viewWillAppear(_ animated: Bool) {
-        print("viewWillAppear")
-    }
-    
-    override func viewWillLayoutSubviews() {
-        print("viewWillLayoutSubviews")
-    }
-    
-    override func viewDidAppear(_ animated: Bool) {
-        print("viewDidAppear")
-    }
-    
-    override func didReceiveMemoryWarning() {
-        print("didReceiveMemoryWarning")
-    }
+//    override func awakeFromNib() {
+//        print("awakeFromNib")
+//    }
+//
+//    override func loadView() {
+//        super.loadView()
+//        print("loadView")
+//    }
+//
+//    override func viewWillAppear(_ animated: Bool) {
+//        print("viewWillAppear")
+//    }
+//
+//    override func viewWillLayoutSubviews() {
+//        print("viewWillLayoutSubviews")
+//    }
+//
+//    override func viewDidAppear(_ animated: Bool) {
+//        print("viewDidAppear")
+//    }
+//
+//    override func didReceiveMemoryWarning() {
+//        print("didReceiveMemoryWarning")
+//    }
 }
 
 //MARK: -
 extension EditViewController{
     @objc func saving(){
             let dformatter = DateFormatter()
-            dformatter.dateFormat = "MM月dd日 ah:mm"
+            dformatter.dateFormat = "M月dd日 ah:mm"
             let commonWord = CommonWord(commonWord: textView.text,date: dformatter.string(from: Date()))
             self.delegate?.retResourceData(data: commonWord,isEditStatus:isEditStatus)
             self.isEditStatus = false
@@ -130,8 +138,6 @@ extension EditViewController {
         view.addSubview(textView)
         view.addSubview(textCountLabel)
         view.addSubview(hintLabel)
-        print("setUpUI")
-
     }
     func setupConstrains(){
         
@@ -141,11 +147,11 @@ extension EditViewController {
 //MARK: - TextView
 extension EditViewController:UITextViewDelegate {
     func textView(_ textView: UITextView, shouldChangeTextIn range: NSRange, replacementText text: String) -> Bool {
-        print("replacementText")
+//        print("replacementText")
         return true
     }
     func textViewDidChange(_ textView: UITextView) {
-        print("textViewDidChange")
+//        print("textViewDidChange")
         let len = textView.text.count
         if len > 0{
             if len > 200 {

@@ -10,8 +10,10 @@ import Foundation
 class CommonWord {
     var commonWord:String!
     var date:String!
-    init(commonWord:String, date:String) {
+    var id:Int?
+    init(commonWord:String, date:String, id:Int = -1) {
         self.commonWord = commonWord
         self.date = date
+        self.id = id
     }
 }
