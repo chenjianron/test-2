@@ -196,11 +196,11 @@ extension ViewController{
     }
     
     func retResourceData(data:CommonWord,isEditStatus:Bool){
-        if !isEditStatus {
-            print(db!.insert("commonWords",
-                             rowInfo: ["commonWord": "'\(data.commonWord!)'","date": "'\(data.date!)'"]))
-            resoureData = []
-            let statement = db!.fetch("commonWords", cond: "1 == 1", order: nil)
+            if !isEditStatus {
+                print(db!.insert("commonWords",
+                                 rowInfo: ["commonWord": "'\(data.commonWord!)'", "date": "'\(data.date!)'"]))
+            resoureData   =   []
+            let statement =  db!.fetch("commonWords", cond: "1 == 1", order: nil)
             print(statement)
             while sqlite3_step(statement) == SQLITE_ROW{
                 print("sqlite3_step")
