@@ -64,7 +64,6 @@ class ViewController: UIViewController, ViewControllerDelegate{
         deleteButton.setTitle("删除", for: .normal)
         deleteButton.backgroundColor = UIColor.red
         deleteButton.addTarget(self, action: #selector(ViewController.deleteing), for: .touchUpInside)
-        
         return deleteButton
     }()
     
@@ -76,7 +75,6 @@ class ViewController: UIViewController, ViewControllerDelegate{
     }()
     
     lazy var editViewController:EditViewController = {
-        
         return EditViewController()
     }()
 
@@ -255,6 +253,7 @@ extension ViewController {
         
         let backButtonItem = UIBarButtonItem()
         backButtonItem.title = ""
+        
         self.navigationItem.backBarButtonItem = backButtonItem
         
         self.view.addSubview(addTableViewCellButton)

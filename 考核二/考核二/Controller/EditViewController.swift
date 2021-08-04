@@ -121,6 +121,7 @@ extension EditViewController{
 //MARK: - UI
 extension EditViewController {
     func setUpUI(){
+       
         self.navigationItem.rightBarButtonItem = rightButton
 //        if resoureData.count == 0 {
 //            self.navigationItem.rightBarButtonItem?.isEnabled = false
