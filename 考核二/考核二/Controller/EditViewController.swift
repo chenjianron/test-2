@@ -68,30 +68,30 @@ class EditViewController: UIViewController {
         textCountLabel.text = "0/200"
     }
     
-//    override func awakeFromNib() {
-//        print("awakeFromNib")
-//    }
-//
-//    override func loadView() {
-//        super.loadView()
-//        print("loadView")
-//    }
-//
-//    override func viewWillAppear(_ animated: Bool) {
-//        print("viewWillAppear")
-//    }
-//
-//    override func viewWillLayoutSubviews() {
-//        print("viewWillLayoutSubviews")
-//    }
-//
-//    override func viewDidAppear(_ animated: Bool) {
-//        print("viewDidAppear")
-//    }
-//
-//    override func didReceiveMemoryWarning() {
-//        print("didReceiveMemoryWarning")
-//    }
+    override func awakeFromNib() {
+        print("awakeFromNib")
+    }
+
+    override func loadView() {
+        super.loadView()
+        print("loadView")
+    }
+
+    override func viewWillAppear(_ animated: Bool) {
+        print("viewWillAppear")
+    }
+
+    override func viewWillLayoutSubviews() {
+        print("viewWillLayoutSubviews")
+    }
+
+    override func viewDidAppear(_ animated: Bool) {
+        print("viewDidAppear")
+    }
+
+    override func didReceiveMemoryWarning() {
+        print("didReceiveMemoryWarning")
+    }
 }
 
 //MARK: -

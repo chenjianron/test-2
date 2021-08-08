@@ -8,7 +8,7 @@
 import UIKit
 import SQLite3
 
-protocol ViewControllerDelegate:NSObjectProtocol {
+protocol ViewControllerDelegate {
     func retResourceData(data:CommonWord,isEditStatus:Bool)
 }
 
